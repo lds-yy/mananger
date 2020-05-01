@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rjb.dao.userMapper">
+    <resultMap id="forUsers" type="com.rjb.bean.users">
+        <result property="name" column="username"></result>
+    </resultMap>
+<select id="finAll" resultMap="forUsers">
+    select *from users
+    <where>
+    <if test="sex!=null&amp;&amp;sex!=''">
+        and gender like CONCat ("",#{sex},"%")
+    </if>
+        <if test="name!=null&amp;&amp;name!=''">
+            and nickname like concat ("",#{name},"%")
+        </if>
+    </where>
+    order by uid asc LIMIT #{pager.firstParam},#{pager.pageSize}
+</select>
+    <select id="findByid" resultMap="forUsers">
+        select *from users where uid = #{uid}
+    </select>
+    <sql id="user_fields">
+        username,password,nickname,age,gender,phone,createTime,updateTime,lastLogin,userStatus,remark
+    </sql>
+    <!--增加操作。 影响的行数保存于id中-->
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="uid">
+        insert into users(<include refid="user_fields"></include>)
+        values(#{name},#{password},#{nickname},#{age},#{gender},#{phone},#{createTime},#{updateTime},#{lastLogin},#{userStatus},#{remark})
+    </insert>
+    <!-- 修改操作-->
+    <update id="updateUser" parameterType="com.rjb.bean.users">
+        update users
+        <!-- 加上判断，为空的就不修改数据,解决固定化sql问题-->
+        <set>
+            <if test="name != null">username = #{name},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="lastLogin != null">lastLogin = #{lastLogin},</if>
+            <if test="userStatus != null">userStatus = #{userStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </set>
+        where uid = #{uid}
+
+    </update>
+</mapper>

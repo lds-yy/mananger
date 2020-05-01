@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rjb.dao.logMapper">
+<resultMap id="forLog" type="com.rjb.bean.log">
+    <result property="oprTime" column="opr_time"></result>
+
+</resultMap>
+    <insert id="insertLog" parameterType="com.rjb.bean.log"  useGeneratedKeys="true">
+        insert into log(opr_time,type,operator,moudle,opration,result)
+        values (#{oprTime},#{type},#{operator},#{moudle},#{opration},#{result})
+    </insert>
+</mapper>
