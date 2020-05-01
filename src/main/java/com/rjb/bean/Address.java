@@ -10,7 +10,7 @@ public class Address {
     private String country;
     private String street;
     private String remark;
-
+    private String add;
     public Integer getUid() {
         return uid;
     }
